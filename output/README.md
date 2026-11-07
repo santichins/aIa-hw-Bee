@@ -10,4 +10,4 @@
 
 ## ลิงก์ผลงาน
 
-- [ลิงก์]
+- [Stable Income Dashboard](https://santichins.github.io/aIa-hw-Bee/output/dashboard.html)
