@@ -1,0 +1,8 @@
+{
+  "value_percent_per_year": 2.15848,
+  "unit": "% per year",
+  "asof": "2026-10-30",
+  "tenor_years": 10.0,
+  "source": "ThaiBMA Government Yield Curve (https://www.thaibma.or.th/EN/Market/YieldCurve/Government.aspx), JSON: https://www.thaibma.or.th/yieldcurve/gov/2026-10-30",
+  "fetched_at": "2026-10-31 13:35 ICT"
+}

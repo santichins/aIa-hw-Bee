@@ -1,0 +1,310 @@
+{
+ "index": "SETHD",
+ "source": "https://www.set.or.th/en/market/index/sethd/overview",
+ "api": "https://www.set.or.th/api/set/index/sethd/composition?lang=en",
+ "statistics_asof": "2026-11-05",
+ "accessed": "2026-11-06",
+ "note": "ดึงผ่านเบราว์เซอร์ (สคริปต์ตรงโดน 403) · P/E, P/BV, dividend_yield (%), market_cap (บาท) ตามที่ SET แสดง ณ statistics_asof",
+ "members": {
+  "AEONTS.BK": {
+   "symbol": "AEONTS",
+   "name": "AEON THANA SINSAP (THAILAND) PUBLIC COMPANY LIMITED",
+   "sector": "FIN",
+   "last": 88.75,
+   "pe": 7.45,
+   "pb": 0.79,
+   "dividend_yield": 6.17,
+   "market_cap": 22562500000
+  },
+  "AMATA.BK": {
+   "symbol": "AMATA",
+   "name": "AMATA CORPORATION PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 26.25,
+   "pe": 6.04,
+   "pb": 1.2,
+   "dividend_yield": 4.07,
+   "market_cap": 31050000000
+  },
+  "AP.BK": {
+   "symbol": "AP",
+   "name": "AP (THAILAND) PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 7.95,
+   "pe": 5.7,
+   "pb": 0.54,
+   "dividend_yield": 6.5,
+   "market_cap": 25167195960
+  },
+  "BA.BK": {
+   "symbol": "BA",
+   "name": "BANGKOK AIRWAYS PUBLIC COMPANY LIMITED",
+   "sector": "TRANS",
+   "last": 18.7,
+   "pe": 10.12,
+   "pb": 2.76,
+   "dividend_yield": 6.35,
+   "market_cap": 39900000000
+  },
+  "BAM.BK": {
+   "symbol": "BAM",
+   "name": "BANGKOK COMMERCIAL ASSET MANAGEMENT PUBLIC COMPANY LIMITED",
+   "sector": "FIN",
+   "last": 6.25,
+   "pe": 27.07,
+   "pb": 0.47,
+   "dividend_yield": 7.94,
+   "market_cap": 20361866490
+  },
+  "BBL.BK": {
+   "symbol": "BBL",
+   "name": "BANGKOK BANK PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 180.5,
+   "pe": 8.38,
+   "pb": 0.61,
+   "dividend_yield": 5.42,
+   "market_cap": 352181513943
+  },
+  "HMPRO.BK": {
+   "symbol": "HMPRO",
+   "name": "HOME PRODUCT CENTER PUBLIC COMPANY LIMITED",
+   "sector": "COMM",
+   "last": 6.2,
+   "pe": 13.71,
+   "pb": 3.25,
+   "dividend_yield": 6.07,
+   "market_cap": 82852547557.5
+  },
+  "JMT.BK": {
+   "symbol": "JMT",
+   "name": "JMT NETWORK SERVICES PUBLIC COMPANY LIMITED",
+   "sector": "FIN",
+   "last": 10.5,
+   "pe": 16.94,
+   "pb": 0.59,
+   "dividend_yield": 6.15,
+   "market_cap": 15911161432.9
+  },
+  "KBANK.BK": {
+   "symbol": "KBANK",
+   "name": "KASIKORNBANK PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 241,
+   "pe": 11.34,
+   "pb": 1.01,
+   "dividend_yield": 5.67,
+   "market_cap": 585223915471
+  },
+  "KKP.BK": {
+   "symbol": "KKP",
+   "name": "KIATNAKIN PHATRA BANK PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 112.5,
+   "pe": 13.05,
+   "pb": 1.42,
+   "dividend_yield": 4.84,
+   "market_cap": 102078325170
+  },
+  "KTB.BK": {
+   "symbol": "KTB",
+   "name": "KRUNG THAI BANK PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 42,
+   "pe": 12.1,
+   "pb": 1.34,
+   "dividend_yield": 6.17,
+   "market_cap": 604464649062.5
+  },
+  "KTC.BK": {
+   "symbol": "KTC",
+   "name": "KRUNGTHAI CARD PUBLIC COMPANY LIMITED",
+   "sector": "FIN",
+   "last": 35,
+   "pe": 11.02,
+   "pb": 2.11,
+   "dividend_yield": 4.92,
+   "market_cap": 92820026520
+  },
+  "LH.BK": {
+   "symbol": "LH",
+   "name": "LAND AND HOUSES PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 3.5,
+   "pe": 15.53,
+   "pb": 0.82,
+   "dividend_yield": 7.06,
+   "market_cap": 42301984643.04
+  },
+  "M.BK": {
+   "symbol": "M",
+   "name": "MK RESTAURANT GROUP PUBLIC COMPANY LIMITED",
+   "sector": "FOOD",
+   "last": 20.2,
+   "pe": 25.84,
+   "pb": 1.44,
+   "dividend_yield": 4.9,
+   "market_cap": 18785913240
+  },
+  "MEGA.BK": {
+   "symbol": "MEGA",
+   "name": "MEGA LIFESCIENCES PUBLIC COMPANY LIMITED",
+   "sector": "COMM",
+   "last": 35.25,
+   "pe": 14.13,
+   "pb": 2.99,
+   "dividend_yield": 4.51,
+   "market_cap": 30951367534
+  },
+  "PRM.BK": {
+   "symbol": "PRM",
+   "name": "PRIMA MARINE PUBLIC COMPANY LIMITED",
+   "sector": "TRANS",
+   "last": 8.55,
+   "pe": 8.85,
+   "pb": 1.56,
+   "dividend_yield": 5.81,
+   "market_cap": 19092000000
+  },
+  "PTT.BK": {
+   "symbol": "PTT",
+   "name": "PTT PUBLIC COMPANY LIMITED",
+   "sector": "ENERG",
+   "last": 38.25,
+   "pe": 8.94,
+   "pb": 0.93,
+   "dividend_yield": 5.9,
+   "market_cap": 1104649098150
+  },
+  "PTTEP.BK": {
+   "symbol": "PTTEP",
+   "name": "PTT EXPLORATION AND PRODUCTION PUBLIC COMPANY LIMITED",
+   "sector": "ENERG",
+   "last": 142.5,
+   "pe": 7.91,
+   "pb": 0.99,
+   "dividend_yield": 6.16,
+   "market_cap": 563737926800
+  },
+  "QH.BK": {
+   "symbol": "QH",
+   "name": "QUALITY HOUSES PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 1.36,
+   "pe": 7.54,
+   "pb": 0.48,
+   "dividend_yield": 6.68,
+   "market_cap": 14571559037.2
+  },
+  "RATCH.BK": {
+   "symbol": "RATCH",
+   "name": "RATCH GROUP PUBLIC COMPANY LIMITED",
+   "sector": "ENERG",
+   "last": 36.25,
+   "pe": 14.44,
+   "pb": 0.8,
+   "dividend_yield": 4.32,
+   "market_cap": 80474999445
+  },
+  "RCL.BK": {
+   "symbol": "RCL",
+   "name": "REGIONAL CONTAINER LINES PUBLIC COMPANY LIMITED",
+   "sector": "TRANS",
+   "last": 42.5,
+   "pe": 4.97,
+   "pb": 0.66,
+   "dividend_yield": 5.38,
+   "market_cap": 38536875000
+  },
+  "SCB.BK": {
+   "symbol": "SCB",
+   "name": "SCB X PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 149,
+   "pe": 11.76,
+   "pb": 1.06,
+   "dividend_yield": 7.42,
+   "market_cap": 511800307472
+  },
+  "SIRI.BK": {
+   "symbol": "SIRI",
+   "name": "SANSIRI PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 1.41,
+   "pe": 5.81,
+   "pb": 0.5,
+   "dividend_yield": 8.97,
+   "market_cap": 25313308200
+  },
+  "SPALI.BK": {
+   "symbol": "SPALI",
+   "name": "SUPALAI PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 15.6,
+   "pe": 6.56,
+   "pb": 0.53,
+   "dividend_yield": 7.91,
+   "market_cap": 30662948271
+  },
+  "TCAP.BK": {
+   "symbol": "TCAP",
+   "name": "THANACHART CAPITAL PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 76,
+   "pe": 9.26,
+   "pb": 0.97,
+   "dividend_yield": 4.54,
+   "market_cap": 81004752240.75
+  },
+  "TISCO.BK": {
+   "symbol": "TISCO",
+   "name": "TISCO FINANCIAL GROUP PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 123.5,
+   "pe": 14.63,
+   "pb": 2.37,
+   "dividend_yield": 6.18,
+   "market_cap": 100481025812
+  },
+  "TLI.BK": {
+   "symbol": "TLI",
+   "name": "THAI LIFE INSURANCE PUBLIC COMPANY LIMITED",
+   "sector": "INSUR",
+   "last": 11.4,
+   "pe": 10.76,
+   "pb": 0.95,
+   "dividend_yield": 5.26,
+   "market_cap": 130530000000
+  },
+  "TOA.BK": {
+   "symbol": "TOA",
+   "name": "TOA PAINT (THAILAND) PUBLIC COMPANY LIMITED",
+   "sector": "CONMAT",
+   "last": 15.3,
+   "pe": 9.38,
+   "pb": 1.94,
+   "dividend_yield": 4.84,
+   "market_cap": 31449500000
+  },
+  "TTB.BK": {
+   "symbol": "TTB",
+   "name": "TMBTHANACHART BANK PUBLIC COMPANY LIMITED",
+   "sector": "BANK",
+   "last": 2.66,
+   "pe": 11.14,
+   "pb": 1.01,
+   "dividend_yield": 5.29,
+   "market_cap": 263442619023.3
+  },
+  "WHA.BK": {
+   "symbol": "WHA",
+   "name": "WHA CORPORATION PUBLIC COMPANY LIMITED",
+   "sector": "PROP",
+   "last": 4.88,
+   "pe": 17.53,
+   "pb": 1.99,
+   "dividend_yield": 4.23,
+   "market_cap": 74435236701.42
+  }
+ }
+}
