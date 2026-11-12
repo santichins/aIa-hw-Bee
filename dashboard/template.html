@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stable Income Dashboard</title>
+<style>
+:root { color-scheme: light dark; --bg:#f7f7f5; --card:#fff; --text:#1d1d1f; --muted:#6b6b70; --line:#e4e4e0; --accent:#1f7a5a; --partial:#9cc9b6;
+  --g:#1f7a5a; --y:#b26a00; --r:#c0392b; --gbg:#e3f3ec; --ybg:#fff1da; --rbg:#fbe5e2; --warn:#fff4e5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#141416; --card:#1e1e21; --text:#ececee; --muted:#9a9aa0; --line:#2e2e33; --accent:#4cc79a; --partial:#2f6f57;
+  --g:#4cc79a; --y:#e0a43c; --r:#ef7a6c; --gbg:#173126; --ybg:#3a2c17; --rbg:#3b1f1b; --warn:#3a2c17; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 -apple-system,"Segoe UI",Sarabun,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:24px 16px 48px; }
+h1 { margin:0 0 4px; font-size:26px; } h2 { margin:28px 0 10px; font-size:18px; }
+.muted { color:var(--muted); font-size:12px; font-weight:normal; }
+.bar-top { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:12px 0; }
+button, select, input { font:inherit; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:6px 10px; }
+button { cursor:pointer; } button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+button:disabled { opacity:.6; cursor:wait; }
+.tabs button.on { background:var(--text); color:var(--bg); }
+.panel { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.crit { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px 16px; }
+.crit label { display:flex; flex-direction:column; gap:3px; font-size:12px; color:var(--muted); }
+.crit input { width:100%; }
+.warn { background:var(--warn); border-radius:8px; padding:10px 12px; margin:12px 0; font-size:13px; }
+.table-wrap { overflow:auto; max-height:calc(100vh - 110px); background:var(--card); border:1px solid var(--line); border-radius:12px; }
+table { width:100%; border-collapse:separate; border-spacing:0; min-width:1100px; }
+#main thead th { position:sticky; top:0; z-index:3; background:var(--card); box-shadow:0 1px 0 var(--line); white-space:nowrap; }
+#main th[data-sort] { cursor:pointer; user-select:none; } #main th[data-sort]:hover { color:var(--text); }
+#main th.sorted { color:var(--text); }
+#main .c1, #main .c2 { position:sticky; z-index:2; background:var(--card); }
+#main .c1 { left:0; width:48px; min-width:48px; } #main .c2 { left:48px; min-width:200px; max-width:240px; box-shadow:1px 0 0 var(--line); }
+#main thead .c1, #main thead .c2 { z-index:4; }
+#main tr.row:hover .c1, #main tr.row:hover .c2 { background:color-mix(in srgb, var(--line) 40%, var(--card)); }
+.detail td > div { position:sticky; left:0; max-width:calc(100vw - 48px); }
+th, td { padding:9px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+.ar { font-size:9px; margin-left:3px; }
+th { font-size:12px; color:var(--muted); font-weight:600; }
+.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+tr.row { cursor:pointer; } tr.row:hover { background:color-mix(in srgb, var(--line) 40%, transparent); }
+.badge { display:inline-block; padding:2px 9px; border-radius:99px; font-size:12px; font-weight:600; white-space:nowrap; }
+.badge.g { background:var(--gbg); color:var(--g); } .badge.y { background:var(--ybg); color:var(--y); } .badge.r { background:var(--rbg); color:var(--r); }
+.reasons { font-size:11px; color:var(--muted); margin-top:3px; max-width:300px; white-space:normal; }
+.reasons .f { color:var(--r); } .reasons .n { color:var(--y); }
+.detail td { background:color-mix(in srgb, var(--line) 25%, transparent); }
+.dgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+.bars { display:flex; align-items:flex-end; gap:4px; height:130px; }
+.bar-col { flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; text-align:center; }
+.bar { background:var(--accent); border-radius:3px 3px 0 0; min-height:1px; } .partial .bar { background:var(--partial); }
+.val { font-size:9px; color:var(--muted); } .yr { font-size:11px; color:var(--muted); margin-top:4px; }
+.fin { font-size:12px; border-collapse:collapse; min-width:0; width:auto; } .fin th, .fin td { padding:3px 8px; border:0; }
+.src { font-size:11px; color:var(--muted); margin:8px 0 0; } a { color:var(--accent); }
+.flag { font-size:11px; color:var(--y); }
+.ychart { display:flex; flex-direction:column; gap:5px; position:relative; }
+.yrow { display:grid; grid-template-columns:90px 1fr 60px; gap:8px; align-items:center; font-size:12px; }
+.ytrack { position:relative; height:14px; background:color-mix(in srgb, var(--line) 50%, transparent); border-radius:4px; }
+.yfill { height:100%; border-radius:4px; background:var(--accent); } .yfill.below { background:var(--r); }
+.yref { position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--text); }
+.note { font-size:13px; color:var(--muted); } ul { padding-left:18px; font-size:12px; }
+.tag { display:inline-block; margin-left:5px; padding:0 6px; border-radius:4px; font-size:10px; font-weight:600; background:var(--gbg); color:var(--g); vertical-align:1px; }
+</style></head><body><main>
+<h1>Stable Income Dashboard</h1>
+<div class="muted">หุ้นไทยที่ปันผลสม่ำเสมอ · ธุรกิจรายได้/กำไรนิ่ง · เทียบกับดอกเบี้ยอ้างอิง · ข้อมูล Yahoo Finance <b>ยังไม่ตรวจกับงบจริง</b> [ยังไม่ยืนยัน]</div>
+
+<div class="bar-top">
+  <button class="primary" id="upd">⟳ Update ข้อมูล</button>
+  <span class="muted" id="updmsg"></span>
+  <span class="muted" id="asof"></span>
+</div>
+<div id="errors"></div>
+
+<h2>เกณฑ์ผ่าน/ไม่ผ่าน (ปรับได้ เก็บในเบราว์เซอร์นี้)</h2>
+<div class="panel"><div class="crit" id="crit"></div>
+  <p class="note" id="refnote" style="margin:10px 0 0"></p></div>
+
+<div class="bar-top">
+  <span class="tabs"><button data-tab="all" class="on">ทั้งหมด</button> <button data-tab="pass">ผ่านเท่านั้น</button> <button data-tab="held">ที่ถืออยู่</button></span>
+  <input id="q" type="search" placeholder="ค้นหาชื่อหุ้น" size="14"><select id="sector"></select>
+  <label class="muted"><input type="checkbox" id="payers" checked> เฉพาะที่มีปันผลใน Yahoo</label>
+  <label class="muted"><input type="checkbox" id="sethd"> เฉพาะ SETHD (30 ตัว)</label>
+  <span class="muted" id="count"></span>
+</div>
+
+<div class="table-wrap"><table id="main">
+<thead><tr><th class="c1">ถือ</th><th class="c2" data-sort="symbol">หุ้น</th><th class="num" data-sort="price">ราคา</th><th class="num" data-sort="mcap">Market cap (ล้านบาท)</th><th class="num" data-sort="yield">Yield 12 เดือน</th><th class="num" data-sort="spread">Spread vs อ้างอิง</th><th class="num" data-sort="fcfy">FCF yield</th>
+<th class="num" data-sort="streak">จ่ายต่อเนื่อง (ปี)</th><th class="num" data-sort="rcv">รายได้ผันผวน (CV)</th><th class="num" data-sort="cv">กำไรผันผวน (CV)</th><th class="num" data-sort="ibd">IBD/Eq (เท่า)</th><th class="num" data-sort="payout">Payout</th><th data-sort="status">สถานะ</th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+<div class="bar-top"><button id="more" hidden>แสดงเพิ่ม</button></div>
+<p class="note">กดแถวเพื่อดูปันผลรายปี งบ และที่มา · Yield = ปันผลที่ XD ใน 365 วันล่าสุด ÷ ราคาล่าสุด · CV = ส่วนเบี่ยงเบนมาตรฐาน ÷ ค่าเฉลี่ยของรายได้ (หรือกำไรสุทธิ) รายปี (ยิ่งต่ำยิ่งนิ่ง; Yahoo ให้งบย้อนหลังประมาณ 4 ปี จึงใช้ตัดสินได้จำกัด) ·
+Market cap = ราคาล่าสุด × จำนวนหุ้นสามัญจากงบปีล่าสุดของ Yahoo (ค่าประมาณ อาจคลาดเคลื่อนถ้าเพิ่งเพิ่มทุน/แตกพาร์ ไม่ใช่ตัวเลขจาก SET) · FCF yield = กระแสเงินสดอิสระปีล่าสุด (Yahoo: OCF หักรายจ่ายลงทุน) ÷ มูลค่าตลาดโดยประมาณ (ราคาล่าสุด × จำนวนหุ้นจากงบปีล่าสุด) · IBD/Eq = หนี้ที่มีดอกเบี้ย (Yahoo: Total Debt รวมภาระสัญญาเช่า) ÷ ส่วนของผู้ถือหุ้นรวมส่วนได้เสียที่ไม่มีอำนาจควบคุม ปีล่าสุด (ธนาคาร/บริษัทการเงินใช้เทียบไม่ได้) · Payout = เงินปันผลจ่ายจริงจากงบกระแสเงินสด ÷ กำไรสุทธิปีล่าสุด · ⚠ = ปันผล 12 เดือนสูงกว่า 1.8 เท่าของฐาน อาจเป็นปันผลพิเศษหรือข้อมูลผิด</p>
+
+<h2>Yield เทียบดอกเบี้ยอ้างอิง</h2>
+<div class="panel"><div class="ychart" id="ychart"></div><p class="note" style="margin:8px 0 0">เส้นดำ = ดอกเบี้ยอ้างอิง · แท่งแดง = yield ต่ำกว่าเส้น (ตามรายการที่กรองอยู่)</p></div>
+
+<h2>ที่มาของข้อมูล</h2>
+<ul id="sources"></ul>
+<p class="note">ข้อมูลทั้งหมดเป็น status: draft · ใช้เพื่อการศึกษา คัดกรองตามเกณฑ์ของผู้ใช้เท่านั้น ไม่ใช่คำแนะนำการลงทุน</p>
+</main>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = (x, d = 2) => x == null ? '–' : x.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d});
+const store = {
+  get(k, def) { try { const v = localStorage.getItem(k); return v == null ? def : JSON.parse(v); } catch { return def; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+const bondVal = D.bond ? D.bond.value : null;
+const SETHD = D.sethd ? D.sethd.members : {};
+const DEFAULTS = {ref: bondVal ?? 2, spread: 1, fcfy: 3, streak: 5, cuts: 1, cv: 0.35, rcv: 0.25, payout: 100, loss: 0};
+const CRIT = [
+  ['ref', 'ดอกเบี้ยอ้างอิง % ต่อปี (ใส่อัตราฝากจริงพร้อมที่มา)', 0.1],
+  ['spread', 'Yield ต้องสูงกว่าอ้างอิงอย่างน้อย (จุด %)', 0.1],
+  ['fcfy', 'FCF yield ปีล่าสุด ไม่ต่ำกว่า %', 0.5],
+  ['streak', 'จ่ายปันผลต่อเนื่องอย่างน้อย (ปี)', 1],
+  ['cuts', 'ปีที่ปันผลลด >10% ได้ไม่เกิน', 1],
+  ['cv', 'กำไรผันผวน (CV) ไม่เกิน', 0.05],
+  ['rcv', 'รายได้ผันผวน (CV) ไม่เกิน', 0.05],
+  ['payout', 'Payout ไม่เกิน %', 5],
+  ['loss', 'ปีที่ขาดทุนได้ไม่เกิน', 1],
+];
+let crit = Object.assign({}, DEFAULTS, store.get('crit', {}));
+let held = new Set(store.get('held', []));
+let tab = 'all', open = new Set(), limit = 100;
+
+function check(s) {
+  const m = s.summary, c = crit, out = [];
+  const add = (id, label, val, ok) => out.push({id, label, state: val == null ? 'n' : (ok ? 'p' : 'f')});
+  const spread = m.ttm_yield == null ? null : m.ttm_yield - c.ref;
+  add('spread', `Yield ${m.ttm_yield == null ? 'ไม่มีข้อมูล' : fmt(m.ttm_yield) + '% vs ' + fmt(c.ref) + '%'}`, spread, spread != null && spread >= c.spread);
+  add('fcfy', `FCF yield ${m.fcf_yield == null ? 'ไม่มีข้อมูล' : fmt(m.fcf_yield) + '%'}`, m.fcf_yield, m.fcf_yield != null && m.fcf_yield >= c.fcfy);
+  // ประวัติปันผลใน Yahoo น้อยกว่า 3 ปี อาจเป็นหุ้นเพิ่งเข้าตลาดหรือข้อมูลขาด ไม่ตัดสินว่าไม่ผ่าน
+  const thin = m.years_paid < 3;
+  add('streak', thin ? `ประวัติปันผลใน Yahoo สั้น (${m.years_paid} ปี) ตรวจกับ SET` : `จ่ายต่อเนื่อง ${m.streak} ปี`, thin ? null : m.streak, m.streak >= c.streak);
+  add('cuts', `ปันผลลด ${m.cuts} ปี`, m.years_paid ? m.cuts : null, m.cuts <= c.cuts);
+  add('cv', `กำไรผันผวน CV ${fmt(m.ni_cv)}`, m.ni_cv, m.ni_cv != null && m.ni_cv <= c.cv);
+  add('rcv', `รายได้ผันผวน CV ${fmt(m.rev_cv)}`, m.rev_cv, m.rev_cv != null && m.rev_cv <= c.rcv);
+  add('loss', `ขาดทุน ${m.loss_years} ปี`, m.fin_years.length ? m.loss_years : null, m.loss_years <= c.loss);
+  add('payout', `Payout ${fmt(m.payout, 0)}%`, m.payout, m.payout != null && m.payout <= c.payout);
+  let status = 'g';
+  if (out.some(o => o.state === 'f')) status = 'r';
+  else if (out.some(o => o.state === 'n') || m.unusual_ratio) status = 'y';
+  return {out, status, spread};
+}
+const STATUS = {g: ['ผ่าน', 'g'], y: ['ข้อมูลไม่ครบ/ตรวจเพิ่ม', 'y'], r: ['ไม่ผ่าน', 'r']};
+const ORDER = {g: 0, y: 1, r: 2};
+
+function renderCrit() {
+  $('crit').innerHTML = CRIT.map(([k, label, step]) =>
+    `<label>${esc(label)}<input type="number" step="${step}" data-k="${k}" value="${crit[k]}"></label>`).join('') +
+    `<label>&nbsp;<button id="reset">คืนค่าเริ่มต้น</button></label>`;
+  document.querySelectorAll('#crit input').forEach(i => i.oninput = () => {
+    const v = parseFloat(i.value); if (!isNaN(v)) { crit[i.dataset.k] = v; store.set('crit', crit); render(); }
+  });
+  $('reset').onclick = () => { crit = Object.assign({}, DEFAULTS); store.set('crit', crit); renderCrit(); render(); };
+  $('refnote').textContent = D.bond
+    ? `ค่าเริ่มต้นของดอกเบี้ยอ้างอิง = อัตราผลตอบแทนพันธบัตรรัฐบาล 10 ปี ${fmt(D.bond.value, 3)}% ณ ${D.bond.asof} [ที่มา: ${D.bond.source}] — ยังไม่ใช่อัตราเงินฝากธนาคาร ให้ใส่อัตราฝากที่คุณใช้เทียบ พร้อมที่มา`
+    : 'ไม่พบข้อมูลพันธบัตร 10 ปี [ยังไม่ยืนยัน] — ใส่ดอกเบี้ยอ้างอิงเอง';
+}
+
+const SORT_KEYS = {
+  symbol: x => x.s.symbol, price: x => x.s.price, mcap: x => x.s.summary.mcap, yield: x => x.s.summary.ttm_yield, spread: x => x.r.spread,
+  fcfy: x => x.s.summary.fcf_yield, streak: x => x.s.summary.streak, rcv: x => x.s.summary.rev_cv, cv: x => x.s.summary.ni_cv,
+  ibd: x => x.s.summary.ibd_de, payout: x => x.s.summary.payout, status: x => ORDER[x.r.status],
+};
+// ครั้งแรกที่กดหัวคอลัมน์: ตัวที่ยิ่งต่ำยิ่งดีเรียงน้อยไปมาก นอกนั้นมากไปน้อย
+const ASC_FIRST = new Set(['symbol', 'status', 'rcv', 'cv', 'ibd']);
+let sortBy = 'status', sortDir = 'asc';
+
+function visible() {
+  const sec = $('sector').value;
+  let list = D.stocks.map(s => ({s, r: check(s)}));
+  if (sec) list = list.filter(x => x.s.sector === sec);
+  const q = $('q').value.trim().toLowerCase();
+  if (q) list = list.filter(x => (x.s.symbol + ' ' + x.s.name).toLowerCase().includes(q));
+  if ($('payers').checked) list = list.filter(x => x.s.summary.years_paid > 0 || x.s.summary.ttm_dps > 0);
+  if ($('sethd').checked) list = list.filter(x => SETHD[x.s.symbol]);
+  if (tab === 'pass') list = list.filter(x => x.r.status === 'g');
+  if (tab === 'held') list = list.filter(x => held.has(x.s.symbol));
+  const key = SORT_KEYS[sortBy];
+  const dir = sortDir === 'asc' ? 1 : -1;
+  // ค่าว่างอยู่ท้ายเสมอไม่ว่าจะเรียงขึ้นหรือลง
+  return list.sort((a, b) => {
+    const x = key(a), y = key(b);
+    if (x == null && y == null) return 0;
+    if (x == null) return 1;
+    if (y == null) return -1;
+    return (x > y ? 1 : x < y ? -1 : 0) * dir || (sortBy === 'status' ? (b.s.summary.ttm_yield ?? 0) - (a.s.summary.ttm_yield ?? 0) : 0);
+  });
+}
+
+function detail(s) {
+  const m = s.summary, peak = Math.max(...m.annual.map(a => a[1]), 0) || 1;
+  const bars = m.annual.map(([y, v], i) => `<div class="bar-col${i === m.annual.length - 1 ? ' partial' : ''}" title="${y}: ${fmt(v, 3)}">
+    <div class="val">${v ? fmt(v) : ''}</div><div class="bar" style="height:${v / peak * 100}%"></div><div class="yr">${String(y).slice(2)}</div></div>`).join('');
+  const fy = m.fin_years;
+  const bn = x => x == null ? '–' : fmt(x / 1e6, 0);
+  const fin = fy.length ? `<table class="fin"><tr><th>ปี</th><th class="num">รายได้</th><th class="num">กำไรสุทธิ</th><th class="num">OCF</th><th class="num">FCF</th><th class="num">หนี้มีดอกเบี้ย</th><th class="num">ส่วนผู้ถือหุ้น</th><th class="num">ปันผลจ่าย</th></tr>` +
+    fy.map(y => { const f = s.financials[y]; return `<tr><td>${y}</td><td class="num">${bn(f.revenue)}</td><td class="num">${bn(f.net_income)}</td><td class="num">${bn(f.ocf)}</td><td class="num">${bn(f.fcf)}</td><td class="num">${bn(f.debt)}</td><td class="num">${bn(f.equity ?? f.equity_parent)}</td><td class="num">${bn(f.div_paid == null ? null : Math.abs(f.div_paid))}</td></tr>`; }).join('') +
+    `</table><div class="muted">หน่วย: ล้านบาท [ที่มา: <a href="${esc(s.fin_url)}">Yahoo Finance ${esc(s.symbol)} financials</a>, เข้าถึง ${esc(D.accessed)}] [ยังไม่ยืนยัน]</div>`
+    : `<div class="flag">ไม่มีข้อมูลงบจาก Yahoo ${esc(s.fin_error || '')} [ยังไม่ยืนยัน]</div>`;
+  const h = SETHD[s.symbol];
+  const set = h ? `<p class="src"><b>SETHD (ตัวเลขจาก SET):</b> ราคา ${fmt(h.last)} · P/E ${fmt(h.pe)} · P/BV ${fmt(h.pb)} · Dividend yield ${fmt(h.dividend_yield)}% · Market cap ${fmt(h.market_cap / 1e6, 0)} ล้านบาท
+    [ที่มา: <a href="${esc(D.sethd.source)}">SET: SETHD constituents</a>, สถิติ ณ ${esc(D.sethd.statistics_asof)}, เข้าถึง ${esc(D.sethd.accessed)}]</p>` : '';
+  return `<td colspan="13">${set}<div class="dgrid"><div><b>ปันผลต่อหุ้นรายปี (${esc(s.currency)})</b><div class="bars">${bars}</div>
+    <p class="src">แท่งขวาสุดคือปีปัจจุบัน (ยังไม่ครบปี) · ปีนับตามวันที่ XD · [ที่มา: <a href="${esc(s.page_url)}">Yahoo Finance ${esc(s.symbol)} dividend history</a>, เข้าถึง ${esc(D.accessed)}]</p></div>
+    <div><b>งบการเงินรายปี</b>${fin}${m.div_cagr != null ? `<p class="src">CAGR ปันผลรายปี ${fmt(m.div_cagr, 1)}%</p>` : ''}</div></div></td>`;
+}
+
+function render() {
+  const all = visible(), list = all.slice(0, limit);
+  $('count').textContent = `แสดง ${list.length} จาก ${all.length} ตัว (ทั้งหมด ${D.stocks.length})`;
+  $('more').hidden = all.length <= limit;
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const on = th.dataset.sort === sortBy;
+    th.classList.toggle('sorted', on);
+    th.querySelector('.ar')?.remove();
+    if (on) th.insertAdjacentHTML('beforeend', `<span class="ar">${sortDir === 'asc' ? '▲' : '▼'}</span>`);
+  });
+  const rows = [];
+  for (const {s, r} of list) {
+    const m = s.summary, [label, cls] = STATUS[r.status], isOpen = open.has(s.symbol);
+    const reasons = r.out.filter(o => o.state !== 'p').map(o => `<span class="${o.state}">${o.state === 'f' ? '✗' : '?'} ${esc(o.label)}</span>`).join(' · ');
+    rows.push(`<tr class="row" data-sym="${esc(s.symbol)}">
+      <td class="c1"><input type="checkbox" data-hold="${esc(s.symbol)}" ${held.has(s.symbol) ? 'checked' : ''} aria-label="ถือ ${esc(s.symbol)}"></td>
+      <td class="c2"><b>${esc(s.symbol.replace('.BK', ''))}</b>${SETHD[s.symbol] ? '<span class="tag">SETHD</span>' : ''}<div class="muted">${esc(s.name)} · ${esc(s.sector)}</div></td>
+      <td class="num">${fmt(s.price)}</td>
+      <td class="num">${m.mcap == null ? '–' : fmt(m.mcap / 1e6, 0)}</td>
+      <td class="num"><b>${fmt(m.ttm_yield)}%</b>${m.unusual_ratio ? `<div class="flag">⚠ ${fmt(m.unusual_ratio, 1)}× ของฐาน [ยังไม่ยืนยัน]</div>` : ''}</td>
+      <td class="num">${r.spread == null ? '–' : (r.spread >= 0 ? '+' : '') + fmt(r.spread)}</td>
+      <td class="num">${fmt(m.fcf_yield)}${m.fcf_yield == null ? '' : '%'}</td>
+      <td class="num">${m.streak}/${m.years_total}</td>
+      <td class="num">${fmt(m.rev_cv)}</td>
+      <td class="num">${fmt(m.ni_cv)}</td>
+      <td class="num">${fmt(m.ibd_de)}</td>
+      <td class="num">${m.payout == null ? '–' : fmt(m.payout, 0) + '%'}</td>
+      <td><span class="badge ${cls}">${label}</span>${reasons ? `<div class="reasons">${reasons}</div>` : ''}</td></tr>`);
+    if (isOpen) rows.push(`<tr class="detail">${detail(s)}</tr>`);
+  }
+  $('rows').innerHTML = rows.join('') || '<tr><td colspan="13" class="muted">ไม่มีหุ้นตามตัวกรองนี้</td></tr>';
+  document.querySelectorAll('tr.row').forEach(tr => tr.onclick = e => {
+    if (e.target.matches('input,a')) return;
+    const k = tr.dataset.sym; open.has(k) ? open.delete(k) : open.add(k); render();
+  });
+  document.querySelectorAll('[data-hold]').forEach(cb => cb.onchange = () => {
+    cb.checked ? held.add(cb.dataset.hold) : held.delete(cb.dataset.hold); store.set('held', [...held]); if (tab === 'held') render();
+  });
+  // yield chart
+  const ys = list.filter(x => x.s.summary.ttm_yield != null), maxY = Math.max(crit.ref * 1.2, ...ys.map(x => x.s.summary.ttm_yield), 1);
+  $('ychart').innerHTML = ys.map(({s}) => { const y = s.summary.ttm_yield;
+    return `<div class="yrow"><span>${esc(s.symbol.replace('.BK', ''))}</span><div class="ytrack"><div class="yfill${y < crit.ref ? ' below' : ''}" style="width:${y / maxY * 100}%"></div><div class="yref" style="left:${crit.ref / maxY * 100}%"></div></div><span class="num">${fmt(y)}%</span></div>`; }).join('') || '<span class="muted">ไม่มีข้อมูล</span>';
+}
+
+function init() {
+  $('asof').textContent = `ข้อมูลล่าสุด ${D.accessed} (เวลาไทย)`;
+  // ปุ่ม Update ต้องมี serve.py ในเครื่อง · เปิดจากที่อื่น (เช่น GitHub Pages) ถ้ามี update_url ให้ปุ่มพาไปหน้า Run workflow ของ GitHub Actions (เฉพาะเจ้าของ repo) ไม่มีก็ซ่อน
+  if (!['127.0.0.1', 'localhost'].includes(location.hostname)) {
+    $('asof').textContent += ' · หน้านี้เป็นภาพ ณ วันที่ดังกล่าว (อัปเดตอัตโนมัติทุกวันธรรมดา)';
+    if (D.update_url) {
+      $('upd').textContent = '⟳ Update (GitHub Actions)';
+      $('upd').onclick = () => { window.open(D.update_url, '_blank', 'noopener'); };
+      $('updmsg').textContent = 'กดแล้วไปหน้า Run workflow บน GitHub (ต้องล็อกอินเป็นเจ้าของ repo) · หรือรัน python3 dashboard/serve.py ในเครื่อง';
+    } else { $('upd').style.display = 'none'; }
+  }
+  const errs = Object.entries(D.errors || {});
+  $('errors').innerHTML = errs.length ? `<div class="warn">ดึงข้อมูลไม่สำเร็จ: ${errs.map(([k, v]) => esc(k) + ' (' + esc(v) + ')').join(', ')}</div>` : '';
+  const secs = [...new Set(D.stocks.map(s => s.sector))];
+  $('sector').innerHTML = '<option value="">ทุกกลุ่ม</option>' + secs.map(s => `<option>${esc(s)}</option>`).join('');
+  $('sources').innerHTML = D.stocks.map(s => `<li>${esc(s.symbol)}: <a href="${esc(s.page_url)}">dividend history</a> · <a href="${esc(s.fin_url)}">financials</a> · เข้าถึง ${esc(D.accessed)}</li>`).join('');
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    tab = b.dataset.tab; document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b)); render();
+  });
+  const reset = () => { limit = 100; render(); };
+  $('sector').onchange = $('payers').onchange = $('sethd').onchange = reset;
+  if (D.sethd) $('sources').insertAdjacentHTML('afterbegin', `<li>SETHD (รายชื่อ 30 ตัว, P/E, P/BV, dividend yield, market cap): <a href="${esc(D.sethd.source)}">set.or.th</a> · สถิติ ณ ${esc(D.sethd.statistics_asof)} · เข้าถึง ${esc(D.sethd.accessed)}</li>`);
+  else $('sethd').disabled = true;
+  document.querySelectorAll('th[data-sort]').forEach(th => th.onclick = () => {
+    const k = th.dataset.sort;
+    if (sortBy === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortBy = k; sortDir = ASC_FIRST.has(k) ? 'asc' : 'desc'; }
+    reset();
+  });
+  $('q').oninput = reset;
+  $('more').onclick = () => { limit += 200; render(); };
+  if (['127.0.0.1', 'localhost'].includes(location.hostname) || !D.update_url) $('upd').onclick = async () => {
+    if (location.protocol === 'file:') { $('updmsg').textContent = 'เปิดผ่าน server ก่อน: รัน python3 dashboard/serve.py แล้วเปิด http://127.0.0.1:8765'; return; }
+    $('upd').disabled = true; $('updmsg').textContent = 'เริ่มดึงข้อมูล…';
+    try {
+      const r = await fetch('/update', {method: 'POST'});
+      if (!r.ok && r.status !== 409) throw new Error((await r.json()).error || r.status);
+      for (;;) {
+        await new Promise(res => setTimeout(res, 1500));
+        const st = await (await fetch('/status')).json();
+        if (st.running) { $('updmsg').textContent = `กำลังดึงข้อมูล ${st.done}/${st.total}…`; continue; }
+        if (st.error) throw new Error(st.error);
+        break;
+      }
+      $('updmsg').textContent = 'สำเร็จ กำลังโหลดใหม่…'; location.reload();
+    } catch (e) { $('updmsg').textContent = 'อัปเดตไม่สำเร็จ: ' + e.message; $('upd').disabled = false; }
+  };
+  renderCrit(); render();
+}
+init();
+</script></body></html>
