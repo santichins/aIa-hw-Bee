@@ -1,0 +1,42 @@
+name: Update dashboard
+
+on:
+  schedule:
+    - cron: "30 3 * * 1-5"   # 10:30 เวลาไทย วันจันทร์-ศุกร์
+  workflow_dispatch:          # กดรันเองได้ที่ Actions > Update dashboard > Run workflow
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-dashboard
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build dashboard from Yahoo Finance
+        env:
+          UPDATE_URL: https://github.com/${{ github.repository }}/actions/workflows/update.yml
+        run: python3 dashboard/build_dashboard.py
+      - name: Publish page
+        run: cp dashboard/index.html output/dashboard.html
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/dashboard.html
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git commit -m "อัปเดตราคา dashboard อัตโนมัติ $(TZ=Asia/Bangkok date +'%Y-%m-%d %H:%M')"
+          git push
+      - name: Trigger Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
